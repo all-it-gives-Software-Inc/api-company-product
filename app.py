@@ -1,27 +1,45 @@
 import os
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
-from models import setup_db, Movie, db_drop_and_create_all
+from models import setup_db, Store, db_drop_and_create_all
+import json
+from types import SimpleNamespace
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
     """ uncomment at the first time running the app """
-    # db_drop_and_create_all()
+    db_drop_and_create_all()
     @app.route('/', methods=['GET'])
     def home():
         return jsonify({'message': 'Hello,hello, World!'})
-    @app.route("/movies")
+    @app.route("/stores")
     def get_movies():
         try:
-            movies = Movie.query.order_by(Movie.title).all()
-            movie=[]
-            movie=[mov.title for mov in movies]
+            stores = Store.query.order_by(Store.name).all()
+            store=[]
+            store=[mov.name for mov in stores]
             return jsonify(
                 {
                     "success": True,
-                    "movie name": movie
+                    "store name": store
+                }
+            ), 200
+        except:
+            abort(500)\
+
+    @app.route("/create/store")
+    def post_store():
+        try:
+            stores = json.loads(request.data)
+            store= Store(**stores)
+            Store.insert(store)
+            return jsonify(
+                {
+                    "success": True,
+                    "store name": store.name
                 }
             ), 200
         except:

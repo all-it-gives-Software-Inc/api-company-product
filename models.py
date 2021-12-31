@@ -1,3 +1,4 @@
+import datetime
 import os
 from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
@@ -21,20 +22,37 @@ def setup_db(app):
 def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
-class Movie(db.Model):
-    __tablename__ = 'movies'
-    id = Column(Integer, primary_key=True)
-    title = Column(String(80), unique=True)
-    release_date = Column(db.DateTime)
-    def __init__(self, title, release_date):
-        self.title = title
-        self.release_date = release_date
+
+class Store(db.Model):
+    __tablename__ = 'store'
+    id = Column(String, primary_key=True)
+    name = Column(String(255), unique=True)
+    category = Column(String(255))
+    delivery_estimate = Column(String(255))
+    rating = Column(String(255))
+    image_path = Column(String(255))
+    about = Column(String(255))
+    hours = Column(String(255))
     def details(self):
         return {
             'id': self.id,
-            'title': self.title,
-            'release_date': self.release_date,
+            'name': self.name,
+            'category': self.category,
+            'deliveryEstimate': self.delivery_estimate,
+            'rating': self.rating,
+            'imagePath': self.image_path,
+            'about': self.about,
+            'hours': self.hours,
         }
+    def __init__(self, id,name, category,delivery_estimate,rating,image_path,about,hours):
+        self.id = id
+        self.name = name
+        self.category = category
+        self.delivery_estimate = delivery_estimate
+        self.rating = rating
+        self.imagePath = image_path
+        self.about = about
+        self.hours = hours
     def insert(self):
         db.session.add(self)
         db.session.commit()
