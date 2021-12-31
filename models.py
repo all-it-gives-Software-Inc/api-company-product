@@ -16,6 +16,7 @@ def setup_db(app):
     db.app = app
     db.init_app(app)
 '''
+
     drops the database tables and starts fresh
     can be used to initialize a clean database
 '''
