@@ -11,12 +11,11 @@ def setup_db(app):
     database_name ='postgres'
     default_database_path= "postgres://{}:{}@{}/{}".format('postgres', 'postgres', 'localhost:5432', database_name)
     database_path = os.getenv('DATABASE_URL', default_database_path)
-    app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://rcmbolvzkvcqbm:15353c503ed6bc46a081e2b3cad7c41b5087861b9bab7c899d7a91b9f27a95cf@ec2-52-70-205-234.compute-1.amazonaws.com:5432/d500cmlemclva1'
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
 '''
-
     drops the database tables and starts fresh
     can be used to initialize a clean database
 '''
